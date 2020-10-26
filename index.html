@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8" />
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <title>Parser</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./src/parser.js"></script>
+    <style></style>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Configuration Parser</h1>
+        <p class="subtitle">Coding Assessment with <strong>Einstein Industries</strong>!</p>
+
+        <div class="notification is-primary">
+          Please input <strong>Config</strong> to get parsed JSON
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <div class="control">
+                <label class="label">Input</label>
+                <textarea
+                  id="input"
+                  class="textarea is-info"
+                  placeholder="Configuration"
+                  rows="20"
+                  spellcheck="false"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <div class="control">
+                <label class="label">JSON</label>
+                <textarea
+                  id="result"
+                  class="textarea is-success"
+                  placeholder="Result"
+                  rows="20"
+                  spellcheck="false"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field is-grouped is-grouped-centered">
+          <p class="control">
+            <button id="reset_btn" class="button is-info is-rounded">RESET</button>
+          </p>
+          <p class="control">
+            <button id="parse_btn" class="button is-success is-rounded">PARSE</button>
+          </p>
+        </div>
+      </div>
+    </section>
+    <script>
+      $(document).ready(function () {
+        let timerid;
+        $('#input').on('input', function (e) {
+          const value = $(this).val();
+          if ($(this).data('lastval') != value) {
+            $(this).data('lastval', value);
+            clearTimeout(timerid);
+
+            timerid = setTimeout(function () {
+              //your change action goes here
+              displayParsedJSON(value);
+            }, 500);
+          }
+        });
+
+        // Reset
+        $('#reset_btn').click(function (e) {
+          $('#input').val('');
+        });
+
+        // Parse
+        $('#parse_btn').click(function (e) {
+          displayParsedJSON($('#input').val());
+        });
+
+        function displayParsedJSON(value) {
+          const result = parse(value);
+          console.log(result);
+          $('#result').val(JSON.stringify(result, null, '\t'));
+        }
+      });
+    </script>
+  </body>
+</html>
